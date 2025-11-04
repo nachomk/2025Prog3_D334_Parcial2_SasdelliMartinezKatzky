@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SaMaKa — Home</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="hm-page">
+
+  <!-- Header -->
+  <header class="hm-header" id="hd-bar">
+    <div class="hm-header-left">
+      <div id="hd-logo">LOGO</div>
+    </div>
+    <div class="hm-header-right">
+      <div id="hd-saludo">HOLA JUAN</div>
+      <button id="hd-salir" class="hm-btn-ghost">SALIR</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="hm-main" id="box-home">
+    <section class="hm-banner" id="hm-banner">
+      <h1 id="hm-bienvenida">Bienvenido, elija su servicio</h1>
+    </section>
+
+    <section class="hm-cards" id="cards-servicios">
+      <article class="hm-card" id="card-servicio-1">
+        <div class="hm-card-img" id="card1-img">IMAGEN</div>
+        <div class="hm-card-name" id="card1-name">Lavado simple</div>
+        <div class="hm-card-price" id="card1-price">$ 8.000</div>
+        <div class="hm-card-actions">
+          <button class="hm-btn" id="card1-cta" disabled>Seleccionar</button>
+          <a class="hm-link" id="card1-detalle" href="#modal-1">Detalle</a>
+        </div>
+      </article>
+
+      <article class="hm-card" id="card-servicio-2">
+        <div class="hm-card-img" id="card2-img">IMAGEN</div>
+        <div class="hm-card-name" id="card2-name">Lavado + Detallado</div>
+        <div class="hm-card-price" id="card2-price">$ 14.000</div>
+        <div class="hm-card-actions">
+          <button class="hm-btn" id="card2-cta" disabled>Seleccionar</button>
+          <a class="hm-link" id="card2-detalle" href="#modal-2">Detalle</a>
+        </div>
+      </article>
+
+      <article class="hm-card" id="card-servicio-3">
+        <div class="hm-card-img" id="card3-img">IMAGEN</div>
+        <div class="hm-card-name" id="card3-name">Servicio premium</div>
+        <div class="hm-card-price" id="card3-price">$ 22.000</div>
+        <div class="hm-card-actions">
+          <button class="hm-btn" id="card3-cta" disabled>Seleccionar</button>
+          <a class="hm-link" id="card3-detalle" href="#modal-3">Detalle</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer Y HEADER SE VAN TODO A PARTIALS, ESTO SOLO ES LA MUESTRA-->
+  <footer class="hm-footer" id="ft-bar">
+    <div id="ft-contacto">contacto</div>
+    <div id="ft-credit">creado por SaMaKa</div>
+    <div id="ft-ayuda">llame a un supervisor</div>
+  </footer>
+
+  <!-- eestos son ejemplos todo esto vuela se crea con tarjetas en JS -->
+  <section id="modal-1" class="hm-modal" aria-hidden="true">
+    <div class="hm-modal-card">
+      <div class="hm-modal-head">
+        <h2>Lavado simple</h2>
+        <a href="#" class="hm-close" aria-label="Cerrar">Cerrar</a>
+      </div>
+      <div class="hm-modal-img">IMAGEN</div>
+      <p>Exterior rápido, aspirado básico, secado.</p>
+      <p><strong>Valor:</strong> $ 8.000</p>
+    </div>
+  </section>
+
+  <section id="modal-2" class="hm-modal" aria-hidden="true">
+    <div class="hm-modal-card">
+      <div class="hm-modal-head">
+        <h2>Lavado + Detallado</h2>
+        <a href="#" class="hm-close">Cerrar</a>
+      </div>
+      <div class="hm-modal-img">IMAGEN</div>
+      <p>Exterior/interior, plásticos, vidrios, llantas.</p>
+      <p><strong>Valor:</strong> $ 14.000</p>
+    </div>
+  </section>
+
+  <section id="modal-3" class="hm-modal" aria-hidden="true">
+    <div class="hm-modal-card">
+      <div class="hm-modal-head">
+        <h2>Servicio premium</h2>
+        <a href="#" class="hm-close">Cerrar</a>
+      </div>
+      <div class="hm-modal-img">IMAGEN</div>
+      <p>Incluye encerado y tratamiento acrílico ligero.</p>
+      <p><strong>Valor:</strong> $ 22.000</p>
+    </div>
+  </section>
+
+</body>
+</html>
