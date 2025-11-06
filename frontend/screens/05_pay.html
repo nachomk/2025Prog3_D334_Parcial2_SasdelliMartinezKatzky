@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Pagar — SaMaKa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="py-page">
+
+  <main class="caja-md" id="box-pay">
+    <h1 class="py-title">Pago</h1>
+
+    <!-- Total -->
+    <section class="total-panel">
+      <div><span>Total a pagar</span></div>
+      <div id="out-total-a-pagar"><strong>$ 0</strong></div>
+    </section>
+
+    <!-- Método de pago (simulado) -->
+    <section id="box-metodos">
+      <h2 class="py-subtitle">Elegí un método</h2>
+      <div class="grid">
+        <button class="metodo" id="pm-efectivo">Efectivo</button>
+        <button class="metodo" id="pm-debito">Débito</button>
+        <button class="metodo" id="pm-credito">Crédito</button>
+        <button class="metodo" id="pm-qr">QR</button>
+      </div>
+    </section>
+
+    <!-- Simulación resultado -->
+    <section class="py-actions">
+      <button class="btn btn--primario" id="btn-pago-aprobar">Simular Aprobado</button>
+      <button class="btn btn--fantasma" id="btn-pago-rechazar">Simular Rechazado</button>
+    </section>
+
+    <p class="mensaje" id="msg-pago"></p>
+
+    <div class="py-nav">
+      <button class="btn btn--fantasma" id="btn-volver-summary">Volver</button>
+      <button class="btn btn--primario" id="btn-continuar-resultado" disabled>Continuar</button>
+    </div>
+  </main>
+
+</body>
+</html>

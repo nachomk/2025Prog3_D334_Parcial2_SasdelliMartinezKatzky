@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Resumen — SaMaKa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="sm-page">
+
+  <main class="caja-md" id="box-summary">
+    <h1 class="sm-title">Resumen de tu pedido</h1>
+
+    <section class="grid">
+      <div class="panel"><strong>Cliente</strong><div id="out-cliente">—</div></div>
+      <div class="panel"><strong>Servicio</strong><div id="out-servicio">—</div></div>
+      <div class="panel"><strong>Vehículo</strong><div id="out-segmento">—</div></div>
+      <div class="panel"><strong>Precio base</strong><div id="out-precio-base">$ 0</div></div>
+      <div class="panel"><strong>Recargo</strong><div id="out-recargo">$ 0</div></div>
+      <div class="panel"><strong>Descuento</strong><div id="out-descuento">$ 0</div></div>
+      <div class="total-panel"><strong>Total</strong><div id="out-total">$ 0</div></div>
+    </section>
+
+    <label class="sm-check">
+      <input id="inp-confirma" type="checkbox">
+      Confirmo que los datos son correctos.
+    </label>
+
+    <p id="msg-summary" class="mensaje"></p>
+
+    <div class="sm-actions">
+      <button id="btn-volver-vehiculo" class="btn btn--fantasma">Volver</button>
+      <button id="btn-ir-pago" class="btn btn--primario" disabled>Ir a pagar</button>
+    </div>
+  </main>
+
+</body>
+</html>

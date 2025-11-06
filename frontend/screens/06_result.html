@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Resultado — SaMaKa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="rs-page">
+
+  <main class="caja-md" id="box-result">
+    <h1 class="rs-title">Resultado del pago</h1>
+
+    <!-- Panel de estado -->
+    <section id="panel-estado">
+      <div class="estado" id="out-estado">—</div>
+      <div class="panel">
+        <span>Total</span>
+        <strong id="out-total">$ 0</strong>
+      </div>
+      <div class="panel">
+        <span>Método</span>
+        <strong id="out-metodo">—</strong>
+      </div>
+      <p class="mensaje" id="rs-msg">—</p>
+    </section>
+
+    <div class="rs-actions">
+      <!-- si APROBADO -->
+      <button class="btn btn--primario" id="btn-ir-ticket">Ver ticket</button>
+      <!-- si RECHAZADO -->
+      <button class="btn btn--fantasma" id="btn-reintentar">Reintentar</button>
+      <button class="btn btn--fantasma" id="btn-cambiar-metodo">Cambiar método</button>
+    </div>
+  </main>
+
+</body>
+</html>
