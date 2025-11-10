@@ -1,5 +1,7 @@
 /* ===== BODY ===== */
-.page {
+
+.page,
+.hm-page {
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -9,7 +11,8 @@
   background: #f3f5ff;
 }
 
-/* Welcome con fondo propio */
+
+/* Welcome, fondo diferente*/
 .wl-page {
   margin: 0;
   min-height: 100vh;
@@ -95,7 +98,10 @@
   transition: transform .15s ease, box-shadow .15s ease;
   box-shadow: 0 0 0 rgba(0,0,0,0);
 }
-.card:hover { transform: translateY(-4px); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.card:hover {
+  transform: translateY(-4px);
+ box-shadow: 0 6px 18px rgba(0,0,0,.08); 
+}
 .card__img {
   height: 140px;
   border: 1px dashed #bbb;
@@ -139,11 +145,33 @@ label { font-size: 14px; }
   text-decoration: none;
   user-select: none;
 }
-.btn--primario { border: 1px solid #333; background: #333; color: #fff; }
+.btn--primario {
+  border: 1px solid #333;
+  background: #333;
+  color: #fff;
+
+
+}
+
+
+
 .btn--primario:hover { background: #111; }
-.btn--fantasma { border: 1px solid #ccc; background: #fff; color: #222; }
-.btn--fantasma:hover { background: #f0f0f0; }
-.btn:disabled, .btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+.btn--fantasma {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #222;
+}
+
+.btn--fantasma:hover{
+  background: #f0f0f0;
+}
+
+/*revisar esto cuando js complete la vista*/
+.btn:disabled, .btn[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
 
 /* ===== LINKS ===== */
 .link {
@@ -193,7 +221,7 @@ label { font-size: 14px; }
   justify-content: center;
 }
 
-/* ===== MÉTODOS (Pay) ===== */
+/* ===== MÉTODOS DE PAGO ===== */
 .metodo {
   padding: 10px 14px;
   border: 1px solid #ccc;
@@ -203,9 +231,15 @@ label { font-size: 14px; }
   cursor: pointer;
 }
 .metodo:hover { background: #f0f0f0; }
-.metodo--seleccionado { border-color: #333; background: #eaf0ff; }
 
-/* ===== ACCIONES (unificado + compatibilidad) ===== */
+.metodo--seleccionado {border-color: #333;
+  background: #eaf0ff;
+}
+
+
+
+/* ===== ACCIONES===== */
+/*todos los botones igualkes*/
 .acciones,
 .sm-actions,
 .py-actions,
@@ -218,7 +252,7 @@ label { font-size: 14px; }
   gap: 10px;
 }
 
-/* ===== HOME: header/footer mínimos ===== */
+/* ===== HOME===== */
 .hm-header {
   display: flex;
   justify-content: space-between;
@@ -228,23 +262,38 @@ label { font-size: 14px; }
   border-bottom: 1px solid #ddd;
   padding: 10px 14px;
 }
-.hm-header-left, .hm-header-right { display: flex; align-items: center; gap: 12px; }
-#hd-logo { padding: 8px 12px; border: 1px solid #ddd; border-radius: 10px; background: #fff; }
-.hm-footer {
-  margin-top: auto;
+
+.hm-header-left, .hm-header-right {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  background: #fff;
-  border-top: 1px solid #ddd;
-  padding: 10px 14px;
+  gap: 12px; }
+
+#hd-logo {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  
+  background: #fff; 
 }
 
-/* ===== RESULT: layout del bloque de estado ===== */
+.hm-footer{
+  margin-top: auto; 
+  height: 44px;
+  padding: 0 14px;          
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;        
+  justify-content: space-between;
+  background: #fff;  
+  border-top: 1px solid #ddd;
+  
+}
+
+
+
+/* ===== panel DE ESTADO ===== */
 #panel-estado { display: grid; gap: 10px; }
 
-/* ===== RESPONSIVE ===== */
+/* ===== Responsive de las cartas ===== */
 @media (max-width: 960px) {
   .card { flex: 1 1 45%; max-width: 480px; }
   .card-cuadrada { flex: 1 1 45%; max-width: 45%; }
@@ -253,3 +302,72 @@ label { font-size: 14px; }
   .caja-sm, .caja-md, .caja-xl { padding: 14px; border-radius: 12px; }
   .card, .card-cuadrada { flex: 1 1 100%; max-width: 100%; }
 }
+
+
+/*MENUES DE ADMIN*/
+/* page-scroll-x */
+.page {
+  overflow-x: auto;
+}
+
+/* admin-wrap fijo con tope */
+.admin-wrap {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+  flex: 1;
+  align-items: stretch;
+  min-width: 1120px;     /* tope de achique */
+}
+
+/* sidebar fijo a la izquierda */
+.sidebar { 
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  /*border-radius: 28px;*/
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* sidebar-boton */
+.sidebar .btn {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  
+  justify-content: center;
+  border-radius: 999px;
+  overflow: hidden;
+  
+ 
+}
+
+
+/* contenido */
+.contenido {
+  flex: 1 1 auto;
+  min-width: 820px;      
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+
+/* lugar donde see va a listar todo */
+.lienzo {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  
+  padding: 16px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+

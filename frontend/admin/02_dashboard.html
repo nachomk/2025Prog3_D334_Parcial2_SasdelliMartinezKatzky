@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Dashboard | SaMaKa</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="page" id="admin-dashboard">
+
+  <header class="hm-header">
+
+    <div class="hm-header-left">
+      <div id="hd-logo">LOGO</div>
+      <strong>Panel administrativo</strong>
+    </div>
+
+    <div class="hm-header-right header-tools">
+      <button class="btn btn--fantasma" aria-label="Modo oscuro">●</button>
+      <a class="btn btn--fantasma" href="../screens/02_home.html" aria-label="Salir">⎋</a>
+    </div>
+
+  </header>
+
+  <main class="admin-wrap">
+    <aside class="sidebar">
+      <button class="btn btn--fantasma" id="m-usuarios">Usuarios</button>
+      <button class="btn btn--fantasma" id="m-servicios">Servicios</button>
+      <button class="btn btn--fantasma" id="m-facturacion">Reg. facturación</button>
+      
+    </aside>
+
+    <section class="contenido">
+      <div class="banner">
+        <h1 id="titulo-modulo" style="margin:0; font-size:18px;">BIENVENIDO</h1>
+      </div>
+
+      <div class="acciones oculto" id="acciones-modulo"></div>
+
+      <div class="lienzo" id="lienzo-modulo">
+        <div class="listado__vacio" id="placeholder-modulo">
+          Seleccioná un módulo del menú de la izquierda.
+        </div>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
