@@ -17,4 +17,17 @@
     <button class="btn btn--primario" id="wl-enter">Entrar</button>
   </main>
 </body>
+<script>
+    document.getElementById('wl-enter').addEventListener('click', function() {
+        const nombre = document.getElementById('wl-name').value;
+        
+        if (nombre.trim() === '') {
+            alert('Por favor ingresa un nombre');
+            return;
+        }
+        
+        localStorage.setItem('nombre', nombre);
+        window.location.href = '02_home.html';
+    });
+</script>
 </html>

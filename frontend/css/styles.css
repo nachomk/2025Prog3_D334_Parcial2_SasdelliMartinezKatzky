@@ -371,3 +371,50 @@ label { font-size: 14px; }
 }
 
 
+/* IMAGENES DE LOS LAVADOS (Simple, Detallado y Premium */
+#card1-img {
+  background-image: url('../utils/lavado_simple.jpg');
+}
+#card2-img {
+  background-image: url('../utils/lavado_detallado.jpg');
+}
+#card3-img {
+  background-image: url('../utils/lavado_premium.jpg');
+}
+
+/* ===== MODALES ===== */
+
+/* fondo del modal */
+.modal {
+  display: none;               /* oculto por defecto hasta que se haga click en Detalle */
+  position: fixed;             /* se queda fijo en la pantalla */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); /* fondo semi-transparente */
+  justify-content: center;     /* centrar el contenido */
+  align-items: center;
+}
+
+/* Cuando se muestra */
+.modal.show {
+  display: flex;
+}
+
+/* Caja blanca del modal */
+.modal-content {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 300px;            /* tamaño moderado */
+}
+
+/* Botón de cerrar */
+.close {
+  cursor: pointer;
+  font-size: 20px;
+  float: right;
+}
+

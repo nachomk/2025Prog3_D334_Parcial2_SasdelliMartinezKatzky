@@ -19,7 +19,7 @@
 
     <section class="grid" id="cards-servicios">
       <article class="card" id="card-servicio-1">
-        <div class="card__img" id="card1-img">IMAGEN</div>
+        <div class="card__img" id="card1-img"></div>
         <div class="card__title" id="card1-name">Lavado simple</div>
         <div class="card__price" id="card1-price">$ 8.000</div>
         <div class="card__actions">
@@ -29,7 +29,7 @@
       </article>
 
       <article class="card" id="card-servicio-2">
-        <div class="card__img" id="card2-img">IMAGEN</div>
+        <div class="card__img" id="card2-img"></div>
         <div class="card__title" id="card2-name">Lavado + Detallado</div>
         <div class="card__price" id="card2-price">$ 14.000</div>
         <div class="card__actions">
@@ -39,7 +39,7 @@
       </article>
 
       <article class="card" id="card-servicio-3">
-        <div class="card__img" id="card3-img">IMAGEN</div>
+        <div class="card__img" id="card3-img"></div>
         <div class="card__title" id="card3-name">Servicio premium</div>
         <div class="card__price" id="card3-price">$ 22.000</div>
         <div class="card__actions">
@@ -52,7 +52,42 @@
 
   <!-- Footer -->
 <div data-include="../partials/footer.html"></div>
+<script src="../js/modals.js"></script>
 <script src="../js/include.js"></script>
+<!-- MODALES -->
+<div id="modals">
+
+  <!-- MODAL 1 -->
+  <div class="modal" id="modal-1">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Lavado Simple</h2>
+      <p>Incluye enjuague, shampoo, secado y limpieza rápida de vidrios.</p>
+    </div>
+  </div>
+
+  <!-- MODAL 2 -->
+  <div class="modal" id="modal-2">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Lavado + Detallado</h2>
+      <p>Exterior completo, aspirado interior, renovador de plásticos y vidrios.</p>
+    </div>
+  </div>
+
+  <!-- MODAL 3 -->
+  <div class="modal" id="modal-3">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Servicio Premium</h2>
+      <p>Pulido suave, cerámico express, limpieza profunda y aromatización.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal script -->
+<script src="../js/modals.js"></script>
 
 
 </body>
