@@ -16,6 +16,8 @@
 
     <button class="btn btn--primario" id="wl-enter">Entrar</button>
   </main>
+  <div id="engine-overlay"></div>
+  <div id="secret-admin-access"></div>
 </body>
 <script>
     document.getElementById('wl-enter').addEventListener('click', function() {
@@ -29,5 +31,42 @@
         localStorage.setItem('nombre', nombre);
         window.location.href = '02_home.html';
     });
+
+    // --- EFECTO DE MOTOR AL HACER 3 CLICS ---
+    let secretClicks = 0;
+    let lastClick = 0;
+
+    const overlay = document.getElementById("engine-overlay");
+    const secretArea = document.getElementById("secret-admin-access");
+
+    secretArea.addEventListener("click", () => {
+        const now = Date.now();
+
+        if (now - lastClick < 500) {
+            secretClicks++;
+        } else {
+            secretClicks = 1;
+        }
+
+        lastClick = now;
+
+        if (secretClicks === 3) {
+            activarModoAdmin();
+        }
+    });
+
+    function activarModoAdmin() {
+    // Activa vibración REAL en toda la pantalla
+    document.body.classList.add("body-shake");
+
+    // Activa efecto visual del overl
+    // ay (blur + oscuridad)
+    overlay.classList.add("active");
+
+    // Espera la animación y luego redirige
+    setTimeout(() => {
+        window.location.href = "../admin/01_login.html";
+    }, 700);
+}
 </script>
 </html>
