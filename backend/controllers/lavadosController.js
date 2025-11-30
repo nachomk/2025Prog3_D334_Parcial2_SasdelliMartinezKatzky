@@ -1,5 +1,7 @@
+// pool de conexiones proveniente de la base de datos
 const pool = require('../db/pool');
 
+// Obtener los lavados de autos disponibles en la BD
 async function obtenerLavados(req, res) {
     try {
 
@@ -14,6 +16,31 @@ async function obtenerLavados(req, res) {
     }
 }
 
+// Crear un nuevo lavado de auto
+async function crearLavado(req, res) {
+    try {
+        const { nombre, precio, imagen } = req.body;
+
+        const [resultado] = await pool.query(
+            'INSERT INTO tipos_lavado (nombre, precio, imagen) VALUES (?, ?, ?)',
+            [nombre, precio, imagen]
+        );
+
+        const nuevoLavado = {
+            id_lavado: resultado.insertId,
+            nombre,
+            precio,
+            imagen
+        };
+
+        res.status(201).json(nuevoLavado)
+    } catch(err) {
+        console.error('Error al crear un nuevo lavado', err);
+        res.status(500).json({ error: 'Error interno del servido' });
+    }
+}
+
 module.exports = {
-    obtenerLavados
+    obtenerLavados,
+    crearLavado
 };
