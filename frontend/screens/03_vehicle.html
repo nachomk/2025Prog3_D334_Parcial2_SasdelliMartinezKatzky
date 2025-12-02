@@ -16,9 +16,21 @@
   <main class="caja-xl" id="box-vehiculo">
     <section class="banner" id="vh-banner">
       <h1 id="vh-titulo">Elegí tu vehículo</h1>
+
     </section>
 
+
+           <!-- PATENTE -->
+      <div id="vh-patente-box" style="margin-top: 1rem; text-align: center;">
+        <label for="vh-input-patente">Ingrese la patente del vehículo:</label>
+        <input type="text" id="vh-input-patente" placeholder="AA123BB" style="margin-left: .5rem; padding: .25rem .5rem;"/>
+        <p id="vh-error-patente" class="mensaje"></p>
+      </div>
     <section class="grid" id="vh-grid">
+
+
+
+
       <article class="card card-cuadrada" id="card-veh-hatch">
         <div class="card__img" id="img-veh-hatch"
              style="background-image:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop');"></div>
@@ -74,11 +86,17 @@
         <div class="mensaje" id="note-veh-especiales">más $3000</div>
         <button class="btn btn--primario" id="btn-veh-especiales">Seleccionar</button>
       </article>
+
+
     </section>
   </main>
 
-  <div data-include="../partials/footer.html"></div>
+  <!-- Footer -->
+<div data-include="../partials/footer.html"></div>
+
 <script src="../js/include.js"></script>
+<script src="../js/storageTurno.js"></script>
+<script src="../js/vehicle.js"></script>
 
 </body>
 </html>

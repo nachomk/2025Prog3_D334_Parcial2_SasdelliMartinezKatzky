@@ -7,7 +7,7 @@ document.querySelectorAll('.link').forEach(link => {
   });
 });
 
-// Cerrar modal con la X
+
 document.querySelectorAll('.modal .close').forEach(btn => {
   btn.addEventListener('click', () => {
     btn.closest('.modal').classList.remove('show');

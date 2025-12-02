@@ -269,10 +269,13 @@ label { font-size: 14px; }
   gap: 12px; }
 
 #hd-logo {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  
-  background: #fff; 
+  padding: 4px 8px;
+  border: none;       
+  background: transparent;
+}
+#hd-logo img {
+  height: 75px;        
+  display: block;
 }
 
 .hm-footer{

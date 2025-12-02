@@ -6,32 +6,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
-<body class="tk-page">
-
-    <!-- Header -->
+<body class="hm-page">
+  <!-- Header -->
 <div data-include="../partials/header.html"></div>
 
+
   <main class="caja-md" id="box-ticket">
-    <h1 class="tk-title">¡Gracias por tu compra!</h1>
-
-    <section>
-      <div class="panel"><span>N° de turno</span><strong id="tk-turno">—</strong></div>
-      <div class="panel"><span>Cliente</span><strong id="tk-cliente">—</strong></div>
-      <div class="panel"><span>Servicio</span><strong id="tk-servicio">—</strong></div>
-      <div class="panel"><span>Vehículo</span><strong id="tk-vehiculo">—</strong></div>
-      <div class="panel"><span>Total</span><strong id="tk-total">$ 0</strong></div>
-
-      <div class="preview" id="tk-qr">QR</div>
-      <p class="mensaje" id="tk-msg">Presentá este ticket en caja o mostrador.</p>
+    <!-- Turno grande -->
+    <section class="tk-turno-principal" style="text-align:center; margin-top:1.5rem;">
+      <h2 id="tk-turno-linea" style="font-size: 1.8rem; margin-bottom: .5rem;">
+        Su turno es A000
+      </h2>
+      <p id="tk-submensaje">Aguarde a ser llamado.</p>
     </section>
 
-    <div class="tk-actions">
-      <button class="btn btn--fantasma" id="tk-imprimir">Imprimir</button>
-      <button class="btn btn--primario" id="tk-finalizar">Finalizar</button>
+    <!-- Datos generales -->
+    <section class="tk-panel">
+      <div class="tk-row">
+        <span>N.º Ticket</span>
+        <strong id="tk-nro">—</strong>
+      </div>
+      <div class="tk-row">
+        <span>Fecha y hora</span>
+        <strong id="tk-fecha">—</strong>
+      </div>
+      <div class="tk-row">
+        <span>Estado</span>
+        <strong id="tk-estado">—</strong>
+      </div>
+      <div class="tk-row">
+        <span>Método de pago</span>
+        <strong id="tk-metodo">—</strong>
+      </div>
+    </section>
+
+    <!-- Datos del servicio -->
+    <section class="tk-panel">
+      <div class="tk-row">
+        <span>Cliente</span>
+        <strong id="tk-cliente">—</strong>
+      </div>
+      <div class="tk-row">
+        <span>Servicio</span>
+        <strong id="tk-servicio">—</strong>
+      </div>
+      <div class="tk-row">
+        <span>Vehículo</span>
+        <strong id="tk-vehiculo">—</strong>
+      </div>
+      <div class="tk-row">
+        <span>Patente</span>
+        <strong id="tk-patente">—</strong>
+      </div>
+    </section>
+
+    <!-- Importe -->
+    <section class="tk-panel tk-total">
+      <div class="tk-row">
+        <span>Importe</span>
+        <strong id="tk-total">$ 0</strong>
+      </div>
+    </section>
+
+    <!-- Acciones -->
+    <div class="tk-actions" style="margin-top:1.5rem; text-align:center;">
+      <button class="btn btn--fantasma" id="btn-tk-imprimir">Imprimir</button>
+      <button class="btn btn--fantasma" id="btn-tk-otro-metodo">Probar otro método</button>
+      <button class="btn btn--primario" id="btn-tk-finalizar">Finalizar</button>
     </div>
   </main>
-<div data-include="../partials/footer.html"></div>
-<script src="../js/include.js"></script>
 
+  <!-- Footer -->
+  <div data-include="../partials/footer.html"></div>
+
+  <script src="../js/include.js"></script>
+  <script src="../js/storageTurno.js"></script>
+  <script src="../js/ticket.js"></script>
 </body>
 </html>
