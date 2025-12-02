@@ -1,5 +1,3 @@
-// backend/controllers/ventasController.js
-
 const pool = require('../db/pool');
 
 // ============================
@@ -200,6 +198,31 @@ async function registrarVenta(req, res) {
     }
 }
 
+// Listar todas las ventas
+async function listarVentas(req, res) {
+    try {
+      const [rows] = await pool.query(`
+        SELECT 
+          v.id_venta,
+          v.ticket,
+          v.cliente_nombre,
+          v.estado,
+          v.total,
+          v.metodo_pago,
+          v.motivo_rechazo,
+          v.fecha_creacion
+        FROM ventas v
+        ORDER BY v.fecha_creacion DESC
+      `);
+      
+      return res.status(200).json(rows);
+    } catch (err) {
+      console.error('Error al listar las ventas', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+
 module.exports = {
-    registrarVenta
+    registrarVenta,
+    listarVentas
 };

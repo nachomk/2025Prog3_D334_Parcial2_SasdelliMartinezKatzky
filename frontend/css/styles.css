@@ -647,3 +647,8 @@ label { font-size: 14px; }
 [data-theme="dark"] #vh-error-patente {
   color: #EF4444;
 }
+
+.hd-logo {
+  height: 75px;
+  display: block;
+}
