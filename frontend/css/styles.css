@@ -7,8 +7,8 @@
   display: flex;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
-  color: #222222;
-  background: #f3f5ff;
+  color: #1E293B;
+  background: #F8FAFC;
 }
 
 
@@ -20,8 +20,8 @@
   align-items: center;
   justify-content: center;
   font-family: Arial, Helvetica, sans-serif;
-  color: #222222;
-  background-color: #eef2ff;
+  color: #1E293B;
+  background-color: #EFF6FF;
   background-image: url("https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1600&auto=format&fit=crop");
   background-repeat: no-repeat;
   background-position: center;
@@ -33,7 +33,7 @@
   width: min(360px, 94vw);
   max-width: 94%;
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   padding: 16px;
   box-sizing: border-box;
@@ -45,7 +45,7 @@
   width: min(900px, 96vw);
   margin: 12px auto;
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   padding: 16px;
   box-sizing: border-box;
@@ -57,7 +57,7 @@
   width: min(1100px, 96vw);
   margin: 12px auto;
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   padding: 16px;
   box-sizing: border-box;
@@ -78,16 +78,16 @@
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #E2E8F0;
   border-radius: 10px;
-  background: #fafbff;
+  background: #EFF6FF;
 }
 
 /* ===== TARJETAS ===== */
 .card {
   flex: 1 1 300px;
   max-width: 340px;
-  border: 1px solid #ddd;
+  border: 1px solid #E2E8F0;
   border-radius: 12px;
   background: #fff;
   padding: 12px;
@@ -104,15 +104,15 @@
 }
 .card__img {
   height: 140px;
-  border: 1px dashed #bbb;
+  border: 1px dashed #CBD5E1;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9ff center/cover no-repeat;
+  background: #F8FAFC center/cover no-repeat;
 }
-.card__title { border: 1px solid #ddd; border-radius: 10px; padding: 8px; font-weight: bold; }
-.card__price { border: 1px solid #ddd; border-radius: 10px; padding: 8px; }
+.card__title { border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px; font-weight: bold; }
+.card__price { border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px; }
 .card__actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 
 /* Cuadradas (Vehicle) */
@@ -124,15 +124,15 @@ label { font-size: 14px; }
 .input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #bbb;
+  border: 1px solid #CBD5E1;
   border-radius: 10px;
   margin-top: 6px;
   outline: none;
   box-sizing: border-box;
   background: #fff;
-  color: #222;
+  color: #1E293B;
 }
-.input:focus { border-color: #4b6bff; }
+.input:focus { border-color: #2563EB; }
 
 /* ===== BOTONES ===== */
 .btn {
@@ -146,25 +146,27 @@ label { font-size: 14px; }
   user-select: none;
 }
 .btn--primario {
-  border: 1px solid #333;
-  background: #333;
+  border: 1px solid #2563EB;
+  background: #2563EB;
   color: #fff;
 
 
+
 }
 
 
 
-.btn--primario:hover { background: #111; }
+
+.btn--primario:hover { background: #1D4ED8; }
 
 .btn--fantasma {
-  border: 1px solid #ccc;
+  border: 1px solid #E2E8F0;
   background: #fff;
-  color: #222;
+  color: #1E293B;
 }
 
 .btn--fantasma:hover{
-  background: #f0f0f0;
+  background: #F1F5F9;
 }
 
 /*revisar esto cuando js complete la vista*/
@@ -177,7 +179,7 @@ label { font-size: 14px; }
 .link {
   border: none;
   background: transparent;
-  color: #2a50ff;
+  color: #2563EB;
   text-decoration: underline;
   cursor: pointer;
   padding: 6px 0;
@@ -185,7 +187,7 @@ label { font-size: 14px; }
 
 /* ===== PANELES / MENSAJES / ESTADOS ===== */
 .panel {
-  border: 1px solid #ddd;
+  border: 1px solid #E2E8F0;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -193,29 +195,29 @@ label { font-size: 14px; }
   align-items: center;
 }
 .total-panel {
-  border: 2px solid #333;
+  border: 2px solid #2563EB;
   border-radius: 12px;
   padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.mensaje { margin: 0; min-height: 1em; color: #555; }
-.mensaje--error { color: #c0392b; }
+.mensaje { margin: 0; min-height: 1em; color: #64748B; }
+.mensaje--error { color: #EF4444; }
 .estado {
-  border: 2px solid #999;
+  border: 2px solid #94A3B8;
   border-radius: 12px;
   padding: 12px;
   text-align: center;
   font-weight: bold;
 }
-.estado--ok { border-color: #2ecc71; color: #2ecc71; }
-.estado--error { border-color: #e74c3c; color: #e74c3c; }
+.estado--ok { border-color: #10B981; color: #10B981; }
+.estado--error { border-color: #EF4444; color: #EF4444; }
 .preview {
   height: 180px;
-  border: 1px dashed #bbb;
+  border: 1px dashed #CBD5E1;
   border-radius: 10px;
-  background: #f8f9ff;
+  background: #F8FAFC;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,16 +226,16 @@ label { font-size: 14px; }
 /* ===== MÉTODOS DE PAGO ===== */
 .metodo {
   padding: 10px 14px;
-  border: 1px solid #ccc;
+  border: 1px solid #E2E8F0;
   border-radius: 10px;
   background: #fff;
-  color: #222;
+  color: #1E293B;
   cursor: pointer;
 }
-.metodo:hover { background: #f0f0f0; }
+.metodo:hover { background: #F1F5F9; }
 
-.metodo--seleccionado {border-color: #333;
-  background: #eaf0ff;
+.metodo--seleccionado {border-color: #2563EB;
+  background: #EFF6FF;
 }
 
 
@@ -259,7 +261,7 @@ label { font-size: 14px; }
   align-items: center;
   gap: 12px;
   background: #fff;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #E2E8F0;
   padding: 10px 14px;
 }
 
@@ -287,9 +289,10 @@ label { font-size: 14px; }
   align-items: center;        
   justify-content: space-between;
   background: #fff;  
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #E2E8F0;
   
 }
+
 
 
 
@@ -328,7 +331,7 @@ label { font-size: 14px; }
 .sidebar { 
   min-width: 220px;
   background: #ffffff;
-  border: 1px solid #dddddd;
+  border: 1px solid #E2E8F0;
   /*border-radius: 28px;*/
   padding: 12px;
   box-sizing: border-box;
@@ -366,7 +369,7 @@ label { font-size: 14px; }
 .lienzo {
   flex: 1;
   background: #ffffff;
-  border: 1px solid #dddddd;
+  border: 1px solid #E2E8F0;
   
   padding: 16px;
   box-sizing: border-box;

@@ -1,14 +1,12 @@
-
 const pool = require("../db/pool");
 
 // Devuelve el listado de tipos de vehículo desde la BD
 async function listarTiposVehiculo(req, res) {
   try {
     const [rows] = await pool.query(
-      "SELECT id_tipo, nombre, ajuste FROM tipos_vehiculo"
+      "SELECT id_tipo, nombre, ajuste, imagen FROM tipos_vehiculo"
     );
 
-    
     res.json(rows);
   } catch (error) {
     console.error("Error al obtener tipos de vehículo:", error);

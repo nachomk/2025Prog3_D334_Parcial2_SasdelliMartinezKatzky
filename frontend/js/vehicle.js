@@ -11,6 +11,8 @@
 // URL de la API
 const API_TIPOS_VEHICULO_URL = "http://localhost:3000/api/tipos-vehiculo";
 
+const RUTAS_BASE_IMAGENES = "../utils/";
+
 // Datos hardcodeados por si la API falla
 const TIPOS_VEHICULO_DE_PRUEBA = [
   { id_tipo: 1, nombre: "Hatchback",   ajuste:    0 },
@@ -113,11 +115,33 @@ function crearCardTipoVehiculo(tipoVehiculo) {
   const card = document.createElement("article");
   card.className = "card card-cuadrada";
 
-  // Imagen (usamos una genérica como en el ejemplo)
+  // Imagen desde la BD o genérica por defecto
   const img = document.createElement("div");
   img.className = "card__img";
-  img.style.backgroundImage =
-    "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop')";
+  
+  // Debug: ver qué viene desde la API
+  console.log(`Tipo: ${tipoVehiculo.nombre}, Imagen:`, tipoVehiculo.imagen);
+  
+  // Validar que imagen existe y no está vacía
+  if (tipoVehiculo.imagen && tipoVehiculo.imagen.trim() !== '') {
+    // Si hay imagen en la BD, usamos esa
+    const nombreImagen = tipoVehiculo.imagen.trim();
+    const rutaImagen = RUTAS_BASE_IMAGENES + nombreImagen;
+    console.log(`Usando imagen: ${rutaImagen}`);
+    img.style.backgroundImage = `url('${rutaImagen}')`;
+    img.style.backgroundSize = "cover";
+    img.style.backgroundPosition = "center";
+    img.style.backgroundRepeat = "no-repeat";
+  } else {
+    // Si no hay imagen, usamos una genérica (fallback)
+    console.warn(`No hay imagen para ${tipoVehiculo.nombre}, usando fallback`);
+    img.style.backgroundImage =
+      "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop')";
+    img.style.backgroundSize = "cover";
+    img.style.backgroundPosition = "center";
+    img.style.backgroundRepeat = "no-repeat";
+  }
+  
   card.appendChild(img);
 
   // Título con el nombre del tipo
