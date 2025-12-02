@@ -6,6 +6,8 @@ const lavadosRoutes = require('./routes/lavadosRoutes');
 const tiposVehiculoRoutes = require("./routes/tiposVehiculoRoutes"); 
 const clientesRoutes = require('./routes/clientesRoutes');
 const autosRoutes = require('./routes/autosRoutes');
+const ventasRoutes = require('./routes/ventasRoutes');
+
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +22,9 @@ app.use('/api/lavados', lavadosRoutes);
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/autos', autosRoutes);
 app.use("/api/tipos-vehiculo", tiposVehiculoRoutes); 
+app.use('/api/ventas', ventasRoutes); //http://localhost:3000/api/ventas
+
+
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`)

@@ -74,6 +74,12 @@ function mostrarTicket() {
   const turnoCorto = generarTurnoCorto(nroTicket);
   const fechaHora = new Date().toLocaleString("es-AR");
 
+
+    // Enviamos la venta al backend para registrarla en la BD
+  registrarVentaEnBackend(turno, estadoPago, metodoPago, total);
+
+
+
   // Elementos del DOM
   const elTurnoLinea = document.getElementById("tk-turno-linea");
   const elSubmensaje = document.getElementById("tk-submensaje");
@@ -204,3 +210,128 @@ function mostrarTicket() {
 document.addEventListener("DOMContentLoaded", function () {
   mostrarTicket();
 });
+
+
+
+// Enviar venta al backend (API)
+
+
+
+// Devuelve "accepted" o "rejected"
+function mapearEstadoBackend(estadoPago) {
+  if (estadoPago === "PAGADO") {
+    return "accepted";
+  } else {
+    return "rejected";
+  }
+}
+
+
+function armarCuerpoVenta(turno, estadoBackend, metodoPago, total) {
+  var clienteNombre;
+
+  if (turno.nombreCliente && turno.nombreCliente !== "") {
+    clienteNombre = turno.nombreCliente;
+  } else {
+    clienteNombre = "Cliente sin nombre";
+  }
+
+  var metodoPagoFinal;
+  if (metodoPago !== "—") {
+    metodoPagoFinal = metodoPago;
+  } else {
+    metodoPagoFinal = null;
+  }
+
+  var motivoRechazoFinal;
+  if (estadoBackend === "rejected") {
+    motivoRechazoFinal = "Pago rechazado en pasarela";
+  } else {
+    motivoRechazoFinal = null;
+  }
+
+  var productoIdFinal = null;
+  if (turno.servicio && turno.servicio.id) {
+    productoIdFinal = turno.servicio.id;
+  }
+
+  var tituloFinal;
+  if (turno.servicio && turno.servicio.nombre) {
+    tituloFinal = turno.servicio.nombre;
+  } else {
+    tituloFinal = "Servicio de lavado";
+  }
+
+  var cuerpo = {
+    clienteNombre: clienteNombre,
+    estado: estadoBackend,
+    metodoPago: metodoPagoFinal,
+    motivoRechazo: motivoRechazoFinal,
+    items: [
+      {
+        productoId: productoIdFinal,
+        titulo: tituloFinal,
+        cantidad: 1,
+        precioUnitario: total
+      }
+    ]
+  };
+
+  return cuerpo;
+}
+
+//Usa la respuesta de la API para actualizar el ticket en pantalla
+function actualizarTicketDesdeBackend(data) {
+  if (!data || !data.ok || !data.venta) {
+    return;
+  }
+
+  // Rechazada: no hay ticket
+  if (!data.venta.ticket) {    
+    return;
+  }
+
+  var ticketReal = data.venta.ticket;
+  var elNro = document.getElementById("tk-nro");
+  if (elNro) {
+    elNro.textContent = ticketReal;
+  }
+
+  var elTurnoLinea = document.getElementById("tk-turno-linea");
+  var elSubmensaje = document.getElementById("tk-submensaje");
+
+  if (elTurnoLinea) {
+    var turnoCortoReal = generarTurnoCorto(ticketReal);
+    elTurnoLinea.textContent = "Su turno es " + turnoCortoReal;
+  }
+
+  if (elSubmensaje) {
+    elSubmensaje.textContent = "Aguarde a ser llamado.";
+  }
+}
+
+
+function registrarVentaEnBackend(turno, estadoPago, metodoPago, total) {
+  
+  var estadoBackend = mapearEstadoBackend(estadoPago); 
+  var cuerpoVenta = armarCuerpoVenta(turno, estadoBackend, metodoPago, total);
+
+  // Llamada a la API
+  fetch("http://localhost:3000/api/ventas", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(cuerpoVenta)
+  })
+    .then(function (resp) {
+      return resp.json();
+    })
+    .then(function (data) {
+      console.log("Respuesta /api/ventas:", data);
+      actualizarTicketDesdeBackend(data);
+    })
+    .catch(function (error) {
+      console.error("Error al registrar la venta en el backend:", error);
+    });
+}
