@@ -7,6 +7,7 @@ const tiposVehiculoRoutes = require("./routes/tiposVehiculoRoutes");
 const clientesRoutes = require('./routes/clientesRoutes');
 const autosRoutes = require('./routes/autosRoutes');
 const ventasRoutes = require('./routes/ventasRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 
 const app = express();
@@ -23,6 +24,8 @@ app.use('/api/clientes', clientesRoutes);
 app.use('/api/autos', autosRoutes);
 app.use("/api/tipos-vehiculo", tiposVehiculoRoutes); 
 app.use('/api/ventas', ventasRoutes); //http://localhost:3000/api/ventas
+
+app.use('/api/auth', authRoutes); //http://localhost:3000/api/auth/login
 
 
 
