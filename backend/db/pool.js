@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '123456',//contraseña Hernan Worbench
     database: 'lavadero_autos',
     waitForConnections: true,
     connectionLimit: 10,
@@ -11,3 +11,5 @@ const pool = mysql.createPool({
 });
 
 module.exports = pool;
+
+
