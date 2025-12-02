@@ -1,1 +1,53 @@
-ACCESO AL LOGIN DEL ADMIN
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SaMaKa — Login Admin</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="wl-page">
+  <main class="caja-sm" id="adm-login-box">
+    <h1>Panel Admin</h1>
+    <p>Ingresá tus credenciales de administrador.</p>
+
+    <form id="adm-login-form">
+      <label for="adm-email">Email</label>
+      <input
+        id="adm-email"
+        type="email"
+        class="input"
+        placeholder="admin@samakacars.com"
+      />
+
+      <label for="adm-password">Contraseña</label>
+      <input
+        id="adm-password"
+        type="password"
+        class="input"
+        placeholder="••••••••"
+      />
+
+      <p id="adm-error" class="mensaje--error" style="display:none;"></p>
+
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button type="submit" class="btn btn--primario" id="adm-login-btn">
+          Ingresar
+        </button>
+        <button type="button" class="btn btn--fantasma" id="adm-volver">
+          Volver
+        </button>
+      </div>
+
+        <!-- Credenciales -->
+  <p style="margin-top:12px; font-size:0.8rem; color:#666;">
+    <strong>Modo prueba:</strong> usuario
+    <code>admin@samakacars.com</code> &mdash; contraseña
+    <code>Admin123!</code>
+  </p>
+    </form>
+  </main>
+
+  <script src="../js/admin-login.js"></script>
+</body>
+</html>
