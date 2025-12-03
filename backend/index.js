@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-const logRequest = require('./middlewares/logRequest');
+const logRequest = require('./src/api/middlewares/logRequest');
 
-const lavadosRoutes = require('./routes/lavadosRoutes');
-const tiposVehiculoRoutes = require("./routes/tiposVehiculoRoutes"); 
-const clientesRoutes = require('./routes/clientesRoutes');
-const autosRoutes = require('./routes/autosRoutes');
-const ventasRoutes = require('./routes/ventasRoutes');
-const authRoutes = require('./routes/authRoutes');
-const usuariosRoutes = require('./routes/usuariosRoutes');
+const lavadosRoutes = require('./src/api/routes/lavadosRoutes');
+const tiposVehiculoRoutes = require("./src/api/routes/tiposVehiculoRoutes"); 
+const clientesRoutes = require('./src/api/routes/clientesRoutes');
+const autosRoutes = require('./src/api/routes/autosRoutes');
+const ventasRoutes = require('./src/api/routes/ventasRoutes');
+const authRoutes = require('./src/api/routes/authRoutes');
+const usuariosRoutes = require('./src/api/routes/usuariosRoutes');
 
 
 const app = express();
