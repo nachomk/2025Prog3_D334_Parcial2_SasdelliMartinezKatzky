@@ -40,7 +40,28 @@ async function crearLavado(req, res) {
     }
 }
 
+async function eliminarLavado(req, res) {
+    try {
+      const { id } = req.params;
+      
+      const [result] = await pool.query(
+        'DELETE FROM tipos_lavado WHERE id_lavado = ?',
+        [id]
+      );
+      
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'Lavado no encontrado' });
+      }
+      
+      return res.status(200).json({ message: 'Lavado eliminado correctamente' });
+    } catch (err) {
+      console.error('Error al eliminar lavado', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+
 module.exports = {
     obtenerLavados,
-    crearLavado
+    crearLavado,
+    eliminarLavado
 };
