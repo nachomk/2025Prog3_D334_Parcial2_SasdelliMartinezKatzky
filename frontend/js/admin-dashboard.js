@@ -89,10 +89,19 @@ async function eliminarRegistro(id, tipo) {
   const confirmar = confirm(`¿Estás seguro de que deseas eliminar este ${info.singular}? Esta acción no se puede deshacer.`);
   if (!confirmar) return;
   
+  const url = `${API_BASE}/api/${info.endpoint}/${id}`;
+  console.log(`🗑️  Intentando eliminar ${info.singular} con ID ${id} desde: ${url}`);
+  
   try {
-    const res = await fetch(`${API_BASE}/api/${info.endpoint}/${id}`, {
-      method: 'DELETE'
+    const res = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
+    
+    console.log(`📡 Respuesta recibida: ${res.status} ${res.statusText}`);
+    console.log(`📋 Headers:`, Object.fromEntries(res.headers.entries()));
     
     if (!res.ok) {
       // Verificar si la respuesta es JSON antes de intentar parsearla
@@ -109,8 +118,8 @@ async function eliminarRegistro(id, tipo) {
       } else {
         // Si no es JSON, leer como texto para debugging
         const textResponse = await res.text();
-        console.error('Respuesta no JSON del servidor:', textResponse.substring(0, 200));
-        errorMessage = `Error ${res.status}: El servidor no respondió con JSON válido`;
+        console.error('Respuesta no JSON del servidor:', textResponse.substring(0, 500));
+        errorMessage = `Error ${res.status}: El servidor no respondió con JSON válido. Verifica la consola para más detalles.`;
       }
       
       throw new Error(errorMessage);
@@ -121,6 +130,7 @@ async function eliminarRegistro(id, tipo) {
     const contentType = res.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
       responseData = await res.json();
+      console.log('✅ Respuesta exitosa:', responseData);
     }
     
     alert(`${info.singular.charAt(0).toUpperCase() + info.singular.slice(1)} eliminado correctamente`);
@@ -141,9 +151,357 @@ async function eliminarRegistro(id, tipo) {
         break;
     }
   } catch (err) {
-    console.error(`Error al eliminar ${info.singular}:`, err);
+    console.error(`❌ Error al eliminar ${info.singular}:`, err);
     alert(`Error al eliminar ${info.singular}: ${err.message}`);
   }
+}
+
+// ==============================
+// Funciones para formularios modales
+// ==============================
+
+// Función para crear y mostrar un modal
+function crearModal(titulo, contenidoHTML, onConfirm, onCancel) {
+  // Remover modal existente si hay
+  const modalExistente = document.getElementById('modal-formulario');
+  if (modalExistente) {
+    modalExistente.remove();
+  }
+
+  const modal = document.createElement('div');
+  modal.id = 'modal-formulario';
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal-contenido">
+      <div class="modal-header">
+        <h2>${titulo}</h2>
+        <button class="modal-cerrar" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        ${contenidoHTML}
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--fantasma btn-cancelar">Cancelar</button>
+        <button class="btn btn--primario btn-confirmar">Guardar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Event listeners
+  const btnCerrar = modal.querySelector('.modal-cerrar');
+  const btnCancelar = modal.querySelector('.btn-cancelar');
+  const btnConfirmar = modal.querySelector('.btn-confirmar');
+
+  const cerrarModal = () => {
+    modal.remove();
+    if (onCancel) onCancel();
+  };
+
+  btnCerrar.addEventListener('click', cerrarModal);
+  btnCancelar.addEventListener('click', cerrarModal);
+  btnConfirmar.addEventListener('click', () => {
+    if (onConfirm) {
+      onConfirm();
+    }
+  });
+
+  // Cerrar al hacer click fuera del modal
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      cerrarModal();
+    }
+  });
+
+  return modal;
+}
+
+// Función para mostrar formulario de nuevo usuario
+function mostrarFormularioUsuario() {
+  const contenido = `
+    <form id="form-usuario" class="form-modal">
+      <div class="form-group">
+        <label for="usuario-nombre">Nombre *</label>
+        <input type="text" id="usuario-nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="usuario-apellido">Apellido *</label>
+        <input type="text" id="usuario-apellido" name="apellido" required>
+      </div>
+      <div class="form-group">
+        <label for="usuario-email">Email *</label>
+        <input type="email" id="usuario-email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="usuario-password">Contraseña *</label>
+        <input type="password" id="usuario-password" name="password" required minlength="6">
+      </div>
+      <div class="form-group">
+        <label for="usuario-rol">Rol *</label>
+        <select id="usuario-rol" name="rol" required>
+          <option value="CLIENTE">CLIENTE</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="usuario-activo" name="activo" checked>
+          Usuario activo
+        </label>
+      </div>
+    </form>
+  `;
+
+  crearModal('Nuevo Usuario', contenido, async () => {
+    const form = document.getElementById('form-usuario');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    
+    const datos = {
+      nombre: formData.get('nombre'),
+      apellido: formData.get('apellido'),
+      email: formData.get('email'),
+      password: formData.get('password'),
+      rol: formData.get('rol'),
+      activo: document.getElementById('usuario-activo').checked
+    };
+
+    const url = `${API_BASE}/api/usuarios`;
+    console.log(`➕ Intentando crear usuario:`, { ...datos, password: '***' });
+    console.log(`📡 URL: ${url}`);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      });
+
+      console.log(`📡 Respuesta recibida: ${res.status} ${res.statusText}`);
+      console.log(`📋 Headers:`, Object.fromEntries(res.headers.entries()));
+
+      if (!res.ok) {
+        // Verificar si la respuesta es JSON antes de intentar parsearla
+        const contentType = res.headers.get('content-type');
+        let errorMessage = `Error ${res.status}: ${res.statusText}`;
+        
+        if (contentType && contentType.includes('application/json')) {
+          try {
+            const error = await res.json();
+            errorMessage = error.error || error.message || errorMessage;
+          } catch (parseError) {
+            console.error('Error al parsear respuesta JSON:', parseError);
+          }
+        } else {
+          // Si no es JSON, leer como texto para debugging
+          const textResponse = await res.text();
+          console.error('Respuesta no JSON del servidor:', textResponse.substring(0, 500));
+          errorMessage = `Error ${res.status}: El servidor no respondió con JSON válido. Verifica la consola para más detalles.`;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      // Intentar parsear la respuesta exitosa como JSON
+      let nuevoUsuario;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        nuevoUsuario = await res.json();
+        console.log('✅ Usuario creado exitosamente:', nuevoUsuario);
+      } else {
+        console.warn('⚠️ Respuesta exitosa pero no es JSON');
+      }
+
+      alert('Usuario creado correctamente');
+      document.getElementById('modal-formulario')?.remove();
+      await cargarClientes();
+    } catch (err) {
+      console.error('❌ Error al crear usuario:', err);
+      alert(`Error al crear usuario: ${err.message}`);
+    }
+  });
+}
+
+// Función para mostrar formulario de nuevo servicio
+function mostrarFormularioServicio() {
+  const contenido = `
+    <form id="form-servicio" class="form-modal">
+      <div class="form-group">
+        <label for="servicio-nombre">Nombre *</label>
+        <input type="text" id="servicio-nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="servicio-precio">Precio *</label>
+        <input type="number" id="servicio-precio" name="precio" required min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="servicio-imagen">Imagen (ruta o URL)</label>
+        <input type="text" id="servicio-imagen" name="imagen" placeholder="Ej: lavado_simple.jpg">
+      </div>
+    </form>
+  `;
+
+  crearModal('Nuevo Servicio', contenido, async () => {
+    const form = document.getElementById('form-servicio');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    
+    const datos = {
+      nombre: formData.get('nombre'),
+      precio: Number(formData.get('precio')),
+      imagen: formData.get('imagen') || null
+    };
+
+    const url = `${API_BASE}/api/lavados`;
+    console.log(`➕ Intentando crear servicio:`, datos);
+    console.log(`📡 URL: ${url}`);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      });
+
+      console.log(`📡 Respuesta recibida: ${res.status} ${res.statusText}`);
+      console.log(`📋 Headers:`, Object.fromEntries(res.headers.entries()));
+
+      if (!res.ok) {
+        const contentType = res.headers.get('content-type');
+        let errorMessage = `Error ${res.status}: ${res.statusText}`;
+        
+        if (contentType && contentType.includes('application/json')) {
+          try {
+            const error = await res.json();
+            errorMessage = error.error || error.message || errorMessage;
+          } catch (parseError) {
+            console.error('Error al parsear respuesta JSON:', parseError);
+          }
+        } else {
+          const textResponse = await res.text();
+          console.error('Respuesta no JSON del servidor:', textResponse.substring(0, 500));
+          errorMessage = `Error ${res.status}: El servidor no respondió con JSON válido. Verifica la consola para más detalles.`;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      let nuevoServicio;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        nuevoServicio = await res.json();
+        console.log('✅ Servicio creado exitosamente:', nuevoServicio);
+      }
+
+      alert('Servicio creado correctamente');
+      document.getElementById('modal-formulario')?.remove();
+      await cargarServicios();
+    } catch (err) {
+      console.error('❌ Error al crear servicio:', err);
+      alert(`Error al crear servicio: ${err.message}`);
+    }
+  });
+}
+
+// Función para mostrar formulario de nuevo tipo de vehículo
+function mostrarFormularioTipoVehiculo() {
+  const contenido = `
+    <form id="form-vehiculo" class="form-modal">
+      <div class="form-group">
+        <label for="vehiculo-nombre">Nombre *</label>
+        <input type="text" id="vehiculo-nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="vehiculo-ajuste">Ajuste de precio</label>
+        <input type="number" id="vehiculo-ajuste" name="ajuste" value="0" step="0.01">
+        <small>Valor positivo aumenta el precio, negativo lo disminuye</small>
+      </div>
+      <div class="form-group">
+        <label for="vehiculo-imagen">Imagen (ruta o URL)</label>
+        <input type="text" id="vehiculo-imagen" name="imagen" placeholder="Ej: vehiculo_sedan.jpg">
+      </div>
+    </form>
+  `;
+
+  crearModal('Nuevo Tipo de Vehículo', contenido, async () => {
+    const form = document.getElementById('form-vehiculo');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    
+    const datos = {
+      nombre: formData.get('nombre'),
+      ajuste: formData.get('ajuste') ? Number(formData.get('ajuste')) : 0,
+      imagen: formData.get('imagen') || null
+    };
+
+    const url = `${API_BASE}/api/tipos-vehiculo`;
+    console.log(`➕ Intentando crear tipo de vehículo:`, datos);
+    console.log(`📡 URL: ${url}`);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      });
+
+      console.log(`📡 Respuesta recibida: ${res.status} ${res.statusText}`);
+      console.log(`📋 Headers:`, Object.fromEntries(res.headers.entries()));
+
+      if (!res.ok) {
+        const contentType = res.headers.get('content-type');
+        let errorMessage = `Error ${res.status}: ${res.statusText}`;
+        
+        if (contentType && contentType.includes('application/json')) {
+          try {
+            const error = await res.json();
+            errorMessage = error.error || error.message || errorMessage;
+          } catch (parseError) {
+            console.error('Error al parsear respuesta JSON:', parseError);
+          }
+        } else {
+          const textResponse = await res.text();
+          console.error('Respuesta no JSON del servidor:', textResponse.substring(0, 500));
+          errorMessage = `Error ${res.status}: El servidor no respondió con JSON válido. Verifica la consola para más detalles.`;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      let nuevoTipo;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        nuevoTipo = await res.json();
+        console.log('✅ Tipo de vehículo creado exitosamente:', nuevoTipo);
+      }
+
+      alert('Tipo de vehículo creado correctamente');
+      document.getElementById('modal-formulario')?.remove();
+      await cargarTiposVehiculo();
+    } catch (err) {
+      console.error('❌ Error al crear tipo de vehículo:', err);
+      alert(`Error al crear tipo de vehículo: ${err.message}`);
+    }
+  });
 }
 
 // ==============================
@@ -164,10 +522,7 @@ async function cargarClientes() {
   const btnAgregar = document.createElement('button');
   btnAgregar.className = 'btn btn--primario';
   btnAgregar.innerHTML = '<i class="fas fa-plus"></i> Agregar usuario';
-  btnAgregar.onclick = () => {
-    // TODO: Implementar formulario para agregar usuario
-    alert('Funcionalidad de agregar usuario pendiente de implementar');
-  };
+  btnAgregar.onclick = mostrarFormularioUsuario;
   acciones.appendChild(btnAgregar);
   
   // Ocultar placeholder ANTES de limpiar el lienzo
@@ -223,15 +578,21 @@ async function cargarClientes() {
       const celdaAcciones = document.createElement("td");
       celdaAcciones.className = "acciones-celda";
       
+      const btnEditar = crearIconoEditar(usuario.id_usuario, 'usuario', usuario, mostrarFormularioEditarUsuario);
       const btnEliminar = crearIconoEliminar(usuario.id_usuario, 'usuario', eliminarRegistro);
+      
+      celdaAcciones.appendChild(btnEditar);
       celdaAcciones.appendChild(btnEliminar);
+      
+      // Asegurar que el rol se muestre correctamente
+      const rolMostrar = usuario.rol && usuario.rol.trim() !== '' ? usuario.rol : 'CLIENTE';
       
       fila.innerHTML = `
         <td>${usuario.id_usuario}</td>
         <td>${usuario.nombre || "-"}</td>
         <td>${usuario.apellido || "-"}</td>
         <td>${usuario.email || "-"}</td>
-        <td>${usuario.rol || "-"}</td>
+        <td>${rolMostrar}</td>
         <td>${usuario.activo ? "Sí" : "No"}</td>
       `;
       fila.appendChild(celdaAcciones);
@@ -266,6 +627,7 @@ async function cargarServicios() {
   btnAgregar.className = 'btn btn--primario';
   btnAgregar.id = 'btn-nuevo-servicio';
   btnAgregar.innerHTML = '<i class="fas fa-plus"></i> Nuevo servicio';
+  btnAgregar.onclick = mostrarFormularioServicio;
   acciones.appendChild(btnAgregar);
 
   // Ocultar placeholder ANTES de limpiar el lienzo
@@ -319,7 +681,10 @@ async function cargarServicios() {
       const celdaAcciones = document.createElement("td");
       celdaAcciones.className = "acciones-celda";
       
+      const btnEditar = crearIconoEditar(lav.id_lavado, 'servicio', lav, mostrarFormularioEditarServicio);
       const btnEliminar = crearIconoEliminar(lav.id_lavado, 'servicio', eliminarRegistro);
+      
+      celdaAcciones.appendChild(btnEditar);
       celdaAcciones.appendChild(btnEliminar);
       
       fila.innerHTML = `
@@ -359,10 +724,7 @@ async function cargarTiposVehiculo() {
   const btnAgregar = document.createElement('button');
   btnAgregar.className = 'btn btn--primario';
   btnAgregar.innerHTML = '<i class="fas fa-plus"></i> Agregar tipo de vehículo';
-  btnAgregar.onclick = () => {
-    // TODO: Implementar formulario para agregar tipo de vehículo
-    alert('Funcionalidad de agregar tipo de vehículo pendiente de implementar');
-  };
+  btnAgregar.onclick = mostrarFormularioTipoVehiculo;
   acciones.appendChild(btnAgregar);
   
   // Ocultar placeholder ANTES de limpiar el lienzo
@@ -416,7 +778,10 @@ async function cargarTiposVehiculo() {
       const celdaAcciones = document.createElement("td");
       celdaAcciones.className = "acciones-celda";
       
+      const btnEditar = crearIconoEditar(tipo.id_tipo, 'vehiculo', tipo, mostrarFormularioEditarTipoVehiculo);
       const btnEliminar = crearIconoEliminar(tipo.id_tipo, 'vehiculo', eliminarRegistro);
+      
+      celdaAcciones.appendChild(btnEditar);
       celdaAcciones.appendChild(btnEliminar);
       
       const ajusteTexto =
@@ -570,3 +935,237 @@ document.addEventListener("DOMContentLoaded", function () {
     btnFacturacion.addEventListener("click", cargarFacturacion);
   }
 });
+
+function crearIconoEditar(id, tipo, datos, callback) {
+  const btn = document.createElement('button');
+  btn.className = 'btn-icono btn-icono--editar';
+  btn.setAttribute('aria-label', 'Editar');
+  btn.innerHTML = '<i class="fas fa-edit"></i>';
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    callback(id, tipo, datos);
+  };
+  return btn;
+}
+
+async function actualizarRegistro(id, tipo, datos) {
+  const nombres = {
+    usuario: { singular: 'usuario', plural: 'usuarios', endpoint: 'usuarios' },
+    servicio: { singular: 'servicio', plural: 'servicios', endpoint: 'lavados' },
+    vehiculo: { singular: 'tipo de vehículo', plural: 'tipos de vehículo', endpoint: 'tipos-vehiculo' }
+  };
+  
+  const info = nombres[tipo];
+  if (!info) return;
+  
+  const url = `${API_BASE}/api/${info.endpoint}/${id}`;
+  console.log(`✏️  Intentando actualizar ${info.singular} con ID ${id}:`, datos);
+  console.log(`📡 URL: ${url}`);
+  
+  try {
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos)
+    });
+    
+    console.log(`📡 Respuesta recibida: ${res.status} ${res.statusText}`);
+    console.log(`📋 Headers:`, Object.fromEntries(res.headers.entries()));
+    
+    if (!res.ok) {
+      const contentType = res.headers.get('content-type');
+      let errorMessage = `Error ${res.status}: ${res.statusText}`;
+      
+      if (contentType && contentType.includes('application/json')) {
+        try {
+          const error = await res.json();
+          errorMessage = error.error || error.message || errorMessage;
+        } catch (parseError) {
+          console.error('Error al parsear respuesta JSON:', parseError);
+        }
+      } else {
+        const textResponse = await res.text();
+        console.error('Respuesta no JSON del servidor:', textResponse.substring(0, 500));
+        errorMessage = `Error ${res.status}: El servidor no respondió con JSON válido. Verifica la consola para más detalles.`;
+      }
+      
+      throw new Error(errorMessage);
+    }
+    
+    let responseData;
+    const contentType = res.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      responseData = await res.json();
+      console.log('✅ Registro actualizado exitosamente:', responseData);
+    }
+    
+    alert(`${info.singular.charAt(0).toUpperCase() + info.singular.slice(1)} actualizado correctamente`);
+    
+    // Recargar la lista correspondiente
+    switch(tipo) {
+      case 'usuario':
+        await cargarClientes();
+        break;
+      case 'servicio':
+        await cargarServicios();
+        break;
+      case 'vehiculo':
+        await cargarTiposVehiculo();
+        break;
+    }
+  } catch (err) {
+    console.error(`❌ Error al actualizar ${info.singular}:`, err);
+    alert(`Error al actualizar ${info.singular}: ${err.message}`);
+  }
+}
+
+function mostrarFormularioEditarUsuario(id, usuario) {
+  // Escapar valores para evitar problemas con comillas en el HTML
+  const escapar = (str) => (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  
+  const contenido = `
+    <form id="form-usuario-editar" class="form-modal">
+      <div class="form-group">
+        <label for="usuario-editar-nombre">Nombre *</label>
+        <input type="text" id="usuario-editar-nombre" name="nombre" value="${escapar(usuario.nombre)}" required>
+      </div>
+      <div class="form-group">
+        <label for="usuario-editar-apellido">Apellido *</label>
+        <input type="text" id="usuario-editar-apellido" name="apellido" value="${escapar(usuario.apellido)}" required>
+      </div>
+      <div class="form-group">
+        <label for="usuario-editar-email">Email *</label>
+        <input type="email" id="usuario-editar-email" name="email" value="${escapar(usuario.email)}" required>
+      </div>
+      <div class="form-group">
+        <label for="usuario-editar-password">Contraseña (dejar vacío para no cambiar)</label>
+        <input type="password" id="usuario-editar-password" name="password" minlength="6">
+      </div>
+      <div class="form-group">
+        <label for="usuario-editar-rol">Rol *</label>
+        <select id="usuario-editar-rol" name="rol" required>
+          <option value="CLIENTE" ${usuario.rol === 'CLIENTE' ? 'selected' : ''}>CLIENTE</option>
+          <option value="ADMIN" ${usuario.rol === 'ADMIN' ? 'selected' : ''}>ADMIN</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="usuario-editar-activo" name="activo" ${usuario.activo ? 'checked' : ''}>
+          Usuario activo
+        </label>
+      </div>
+    </form>
+  `;
+
+  crearModal('Editar Usuario', contenido, async () => {
+    const form = document.getElementById('form-usuario-editar');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    
+    const datos = {
+      nombre: formData.get('nombre'),
+      apellido: formData.get('apellido'),
+      email: formData.get('email'),
+      rol: formData.get('rol'),
+      activo: document.getElementById('usuario-editar-activo').checked
+    };
+
+    // Solo incluir password si se proporcionó
+    const password = formData.get('password');
+    if (password && password.trim() !== '') {
+      datos.password = password;
+    }
+
+    await actualizarRegistro(id, 'usuario', datos);
+    document.getElementById('modal-formulario')?.remove();
+  });
+}
+
+// Función para mostrar formulario de edición de servicio
+function mostrarFormularioEditarServicio(id, servicio) {
+  const escapar = (str) => (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  
+  const contenido = `
+    <form id="form-servicio-editar" class="form-modal">
+      <div class="form-group">
+        <label for="servicio-editar-nombre">Nombre *</label>
+        <input type="text" id="servicio-editar-nombre" name="nombre" value="${escapar(servicio.nombre)}" required>
+      </div>
+      <div class="form-group">
+        <label for="servicio-editar-precio">Precio *</label>
+        <input type="number" id="servicio-editar-precio" name="precio" value="${servicio.precio || 0}" required min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="servicio-editar-imagen">Imagen (ruta o URL)</label>
+        <input type="text" id="servicio-editar-imagen" name="imagen" value="${escapar(servicio.imagen)}" placeholder="Ej: lavado_simple.jpg">
+      </div>
+    </form>
+  `;
+
+  crearModal('Editar Servicio', contenido, async () => {
+    const form = document.getElementById('form-servicio-editar');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    
+    const datos = {
+      nombre: formData.get('nombre'),
+      precio: Number(formData.get('precio')),
+      imagen: formData.get('imagen') || null
+    };
+
+    await actualizarRegistro(id, 'servicio', datos);
+    document.getElementById('modal-formulario')?.remove();
+  });
+}
+
+// Función para mostrar formulario de edición de tipo de vehículo
+function mostrarFormularioEditarTipoVehiculo(id, tipo) {
+  const escapar = (str) => (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  
+  const contenido = `
+    <form id="form-vehiculo-editar" class="form-modal">
+      <div class="form-group">
+        <label for="vehiculo-editar-nombre">Nombre *</label>
+        <input type="text" id="vehiculo-editar-nombre" name="nombre" value="${escapar(tipo.nombre)}" required>
+      </div>
+      <div class="form-group">
+        <label for="vehiculo-editar-ajuste">Ajuste de precio</label>
+        <input type="number" id="vehiculo-editar-ajuste" name="ajuste" value="${tipo.ajuste || 0}" step="0.01">
+        <small>Valor positivo aumenta el precio, negativo lo disminuye</small>
+      </div>
+      <div class="form-group">
+        <label for="vehiculo-editar-imagen">Imagen (ruta o URL)</label>
+        <input type="text" id="vehiculo-editar-imagen" name="imagen" value="${escapar(tipo.imagen)}" placeholder="Ej: vehiculo_sedan.jpg">
+      </div>
+    </form>
+  `;
+
+  crearModal('Editar Tipo de Vehículo', contenido, async () => {
+    const form = document.getElementById('form-vehiculo-editar');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    
+    const datos = {
+      nombre: formData.get('nombre'),
+      ajuste: formData.get('ajuste') ? Number(formData.get('ajuste')) : 0,
+      imagen: formData.get('imagen') || null
+    };
+
+    await actualizarRegistro(id, 'vehiculo', datos);
+    document.getElementById('modal-formulario')?.remove();
+  });
+}

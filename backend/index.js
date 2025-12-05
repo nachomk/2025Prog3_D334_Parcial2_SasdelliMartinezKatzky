@@ -24,13 +24,43 @@ app.use('/api/lavados', lavadosRoutes);
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/autos', autosRoutes);
 app.use("/api/tipos-vehiculo", tiposVehiculoRoutes); 
-app.use('/api/ventas', ventasRoutes); //http://localhost:3000/api/ventas
+app.use('/api/ventas', ventasRoutes);
 app.use('/api/usuarios', usuariosRoutes);
-app.use('/api/auth', authRoutes); //http://localhost:3000/api/auth/login
+app.use('/api/auth', authRoutes);
 
+// Middleware para manejar rutas no encontradas (debe ir al final)
+app.use((req, res, next) => {
+  console.log(`⚠️  Ruta no encontrada: ${req.method} ${req.originalUrl}`);
+  res.status(404).json({ 
+    error: 'Ruta no encontrada',
+    method: req.method,
+    path: req.originalUrl,
+    message: `La ruta ${req.method} ${req.originalUrl} no existe`
+  });
+});
 
-
+// Middleware de manejo de errores
+app.use((err, req, res, next) => {
+  console.error('❌ Error no manejado:', err);
+  res.status(500).json({ 
+    error: 'Error interno del servidor',
+    message: err.message 
+  });
+});
 
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`)
+    console.log(`✅ Servidor escuchando en el puerto ${PORT}`);
+    console.log(`📋 Rutas disponibles:`);
+    console.log(`   GET    /api/usuarios`);
+    console.log(`   POST   /api/usuarios`);
+    console.log(`   PUT    /api/usuarios/:id`);
+    console.log(`   DELETE /api/usuarios/:id`);
+    console.log(`   GET    /api/lavados`);
+    console.log(`   POST   /api/lavados`);
+    console.log(`   PUT    /api/lavados/:id`);
+    console.log(`   DELETE /api/lavados/:id`);
+    console.log(`   GET    /api/tipos-vehiculo`);
+    console.log(`   POST   /api/tipos-vehiculo`);
+    console.log(`   PUT    /api/tipos-vehiculo/:id`);
+    console.log(`   DELETE /api/tipos-vehiculo/:id`);
 });
