@@ -1,5 +1,3 @@
-// backend/controllers/ventasController.js
-
 const pool = require('../db/pool');
 
 // ============================
@@ -200,6 +198,71 @@ async function registrarVenta(req, res) {
     }
 }
 
+// Listar todas las ventas
+async function listarVentas(req, res) {
+    try {
+      const [rows] = await pool.query(`
+        SELECT 
+          v.id_venta,
+          v.ticket,
+          v.cliente_nombre,
+          v.estado,
+          v.total,
+          v.metodo_pago,
+          v.motivo_rechazo,
+          v.fecha_creacion
+        FROM ventas v
+        ORDER BY v.fecha_creacion DESC
+      `);
+      
+      return res.status(200).json(rows);
+    } catch (err) {
+      console.error('Error al listar las ventas', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+
+  async function eliminarVenta(req, res) {
+    try {
+      const { id } = req.params;
+      const connection = await pool.getConnection();
+      
+      try {
+        await connection.beginTransaction();
+        
+        // Primero eliminar el detalle
+        await connection.query(
+          'DELETE FROM detalle_venta WHERE id_venta = ?',
+          [id]
+        );
+        
+        // Luego eliminar la venta
+        const [result] = await connection.query(
+          'DELETE FROM ventas WHERE id_venta = ?',
+          [id]
+        );
+        
+        if (result.affectedRows === 0) {
+          await connection.rollback();
+          return res.status(404).json({ error: 'Venta no encontrada' });
+        }
+        
+        await connection.commit();
+        return res.status(200).json({ message: 'Venta eliminada correctamente' });
+      } catch (err) {
+        await connection.rollback();
+        throw err;
+      } finally {
+        connection.release();
+      }
+    } catch (err) {
+      console.error('Error al eliminar venta', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+
 module.exports = {
-    registrarVenta
+    registrarVenta,
+    listarVentas,
+    eliminarVenta
 };
