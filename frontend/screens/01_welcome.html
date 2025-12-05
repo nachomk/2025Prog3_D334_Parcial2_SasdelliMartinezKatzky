@@ -29,7 +29,8 @@
         }
         
         localStorage.setItem('nombre', nombre);
-        window.location.href = '02_home.html';
+        window.location.href = "/static/screens/02_home.html";
+
     });
 
     // --- EFECTO DE MOTOR AL HACER 3 CLICS ---
@@ -65,7 +66,8 @@
 
     // Espera la animación y luego redirige
     setTimeout(() => {
-        window.location.href = "../admin/01_login.html";
+        window.location.href = "/admin/login";
+
     }, 700);
 }
 </script>

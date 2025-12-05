@@ -44,7 +44,12 @@ async function manejarLoginAdmin(evento) {
     localStorage.setItem("ADMIN_USUARIO", JSON.stringify(datos.usuario));
 
     // Redirigir al dashboard de admin
-    window.location.href = "02_dashboard.html";
+   // window.location.href = "02_dashboard.html"; REDIRECCION AL HTML ANTERIOR      VIDEO!!!
+
+
+    window.location.href = "/admin/dashboard"; // redireccion al render actual en ejs
+
+
   } catch (err) {
     console.error("Error al hacer login admin", err);
     msgError.textContent = "Error de conexión con el servidor.";
@@ -58,6 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const btnVolver = document.getElementById("adm-volver");
   btnVolver.addEventListener("click", function () {
-    window.location.href = "../screens/01_welcome.html";
+    //window.location.href = "../screens/01_welcome.html"; LO MISMO QUE ARRIBA PERO PARA EL VOLVER
+
+    window.location.href = "/static/screens/01_welcome.html";
   });
 });

@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const logRequest = require('./src/api/middlewares/logRequest');
 
+const path = require('path'); // VIDEO! entrada de EJS
+
 const lavadosRoutes = require('./src/api/routes/lavadosRoutes');
 const tiposVehiculoRoutes = require("./src/api/routes/tiposVehiculoRoutes"); 
 const clientesRoutes = require('./src/api/routes/clientesRoutes');
@@ -14,19 +16,60 @@ const usuariosRoutes = require('./src/api/routes/usuariosRoutes');
 const app = express();
 const PORT = 3000;
 
+//VISTAS VIDEO!
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'src', 'views'));
+
 // Middlewares globales
 app.use(cors());
 app.use(express.json());
 app.use(logRequest);
 
+//archivos estaticos!
+app.use('/static', express.static(path.join(__dirname, '..', 'frontend')));
+
 // Rutas propias
+app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/lavados', lavadosRoutes);
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/autos', autosRoutes);
 app.use("/api/tipos-vehiculo", tiposVehiculoRoutes); 
 app.use('/api/ventas', ventasRoutes);
-app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/auth', authRoutes);
+
+
+
+//Rutas de vistas Admin (EJS)   VIDEO!
+//logn
+app.get('/admin/login', (req, res) => {
+  res.render('01_login');
+});
+//dash
+app.get('/admin/dashboard', (req, res) => {
+  res.render('02_dashboard');
+});
+
+
+
+app.listen(PORT, () => {
+    console.log(`✅ Servidor escuchando en el puerto ${PORT}`);
+    console.log(`📋 Rutas disponibles:`);
+
+    console.log(`   GET    /api/usuarios`);
+    console.log(`   POST   /api/usuarios`);
+    console.log(`   PUT    /api/usuarios/:id`);
+    console.log(`   DELETE /api/usuarios/:id`);
+
+    console.log(`   GET    /api/lavados`);
+    console.log(`   POST   /api/lavados`);
+    console.log(`   PUT    /api/lavados/:id`);
+    console.log(`   DELETE /api/lavados/:id`);
+
+    console.log(`   GET    /api/tipos-vehiculo`);
+    console.log(`   POST   /api/tipos-vehiculo`);
+    console.log(`   PUT    /api/tipos-vehiculo/:id`);
+    console.log(`   DELETE /api/tipos-vehiculo/:id`);
+});
 
 // Middleware para manejar rutas no encontradas (debe ir al final)
 app.use((req, res, next) => {
@@ -39,6 +82,7 @@ app.use((req, res, next) => {
   });
 });
 
+
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error('❌ Error no manejado:', err);
@@ -46,21 +90,4 @@ app.use((err, req, res, next) => {
     error: 'Error interno del servidor',
     message: err.message 
   });
-});
-
-app.listen(PORT, () => {
-    console.log(`✅ Servidor escuchando en el puerto ${PORT}`);
-    console.log(`📋 Rutas disponibles:`);
-    console.log(`   GET    /api/usuarios`);
-    console.log(`   POST   /api/usuarios`);
-    console.log(`   PUT    /api/usuarios/:id`);
-    console.log(`   DELETE /api/usuarios/:id`);
-    console.log(`   GET    /api/lavados`);
-    console.log(`   POST   /api/lavados`);
-    console.log(`   PUT    /api/lavados/:id`);
-    console.log(`   DELETE /api/lavados/:id`);
-    console.log(`   GET    /api/tipos-vehiculo`);
-    console.log(`   POST   /api/tipos-vehiculo`);
-    console.log(`   PUT    /api/tipos-vehiculo/:id`);
-    console.log(`   DELETE /api/tipos-vehiculo/:id`);
 });
